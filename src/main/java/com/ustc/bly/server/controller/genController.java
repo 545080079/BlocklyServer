@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 public class genController {
-    static final int maxJavaFileCnt = 10;
+    static final int maxJavaFileCnt = 20;
     static final String userName = "user";
     static final String path = "/opt/workdir/";
     static int index = 0;
@@ -24,14 +24,13 @@ public class genController {
 
     //上传Java文件
     @RequestMapping(value = "/submitFile", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-    public void submitFile(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void submitFile(@RequestParam String filename,
+                           HttpServletRequest request,
+                           HttpServletResponse response) throws IOException{
 
-        String file = "default" + (index++) + ".java";
+        String file = filename + ".java";
 
-        if(index > maxJavaFileCnt) {
-            new BashUtil("rm default*.java").run();
-            index = 0;
-        }
+
         new BashUtil("touch " + file).run();
 
         try(
@@ -94,7 +93,7 @@ public class genController {
 //        }
 
         //导入环境变量
-        BashUtil bash = new BashUtil("sh ./env.sh");
+        BashUtil bash = new BashUtil("source ./env.sh");
         bash.run();
 
         //Xml文件归位

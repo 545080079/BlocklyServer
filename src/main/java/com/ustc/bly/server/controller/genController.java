@@ -16,11 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 public class genController {
-    static final int maxJavaFileCnt = 20;
     static final String userName = "user";
     static final String path = "/opt/workdir/";
-    static int index = 0;
-
 
     //上传Java文件
     @RequestMapping(value = "/submitFile", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
@@ -105,7 +102,7 @@ public class genController {
         System.out.println(bash.run());
 
         //执行initGen.sh初始化检查，自动调用工作目录下的autoGen.sh 打包apk
-        bash = new BashUtil("sh ./initGen.sh " + userName);
+        bash = new BashUtil("sh ./autoGen.sh");
         System.out.println(bash.run());
 
         //apk文件下载
